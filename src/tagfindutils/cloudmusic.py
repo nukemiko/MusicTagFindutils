@@ -79,7 +79,7 @@ class CloudMusicSearchResult(SearchResult):
     @property
     def publish_time(self) -> datetime | None:
         time_ms: float = self.type_filter(self._raw_result.get('publishTime'), int) / 1000
-        if time_ms is not None:
+        if time_ms:
             return datetime.fromtimestamp(time_ms)
 
     def get_details(self):

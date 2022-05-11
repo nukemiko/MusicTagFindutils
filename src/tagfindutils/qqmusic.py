@@ -91,7 +91,7 @@ class QQMusicSearchResult(SearchResult):
     @property
     def publish_time(self) -> datetime | None:
         time_ms = self.type_filter(self._raw_result.get('pubtime'), int)
-        if time_ms is not None:
+        if time_ms:
             return datetime.fromtimestamp(time_ms)
 
     def get_details(self):
