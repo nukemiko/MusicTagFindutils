@@ -67,7 +67,7 @@ class SearchResult(Generic[T]):
                f"publish time: {self.publish_time if self.publish_time else 'N/A'}>"
 
     @classmethod
-    def type_filter(cls, value: Any | None, t: Type[T_OUT], allow_None=True) -> T_OUT | None:
+    def type_filter(cls, value: Any, t: Type[T_OUT], allow_None=True) -> T_OUT:
         if value is None and allow_None:
             return value
         if isinstance(value, t):
