@@ -5,17 +5,16 @@ import json
 import requests
 
 
-def search_from_qqmusic(keyword: str,
+def search_from_qqmusic(*keywords: str,
                         result_pageno: int = 0,
                         result_size: int = 10,
-                        *,
                         result_type: int = 0,
                         raw_response=False
                         ) -> dict | requests.Response:
     """从 QQ 音乐获取 歌曲/歌单/歌词/专辑/歌手/MV 的信息。
 
     Args:
-        keyword (str): 关键词
+        keywords (str): 关键词
         result_pageno (int): 搜索结果的所在的页码，默认为 0
         result_size (int): 搜索结果的数量，默认为 10
         result_type (int): 搜索的类型
@@ -36,13 +35,15 @@ def search_from_qqmusic(keyword: str,
     if result_type not in (0, 2, 7, 8, 9, 12):
         raise ValueError(f'不支持的搜索类型：{repr(result_type)}')
 
+    final_keyword: str = ' '.join(keywords)
+
     if result_type == 2:
         url = 'https://c.y.qq.com/soso/fcgi-bin/client_music_search_songlist'
         params = {
             'remoteplace': 'txt.yqq.playlist',
             'page_no': result_pageno,
             'num_per_page': result_size,
-            'query': keyword
+            'query': final_keyword
         }
     else:
         url = 'http://c.y.qq.com/soso/fcgi-bin/client_search_cp'
@@ -50,7 +51,7 @@ def search_from_qqmusic(keyword: str,
             'format': 'json',
             'n': result_size,
             'p': result_pageno + 1,
-            'w': keyword,
+            'w': final_keyword,
             'cr': 1,
             'g_tk': 5381,
             't': result_type
@@ -66,17 +67,16 @@ def search_from_qqmusic(keyword: str,
     return resp.json()
 
 
-def search_from_cloudmusic(keyword: str,
+def search_from_cloudmusic(*keywords: str,
                            result_pageno: int = 0,
                            result_size: int = 10,
-                           *,
                            result_type: int = 1,
                            raw_response=False
                            ) -> dict | requests.Response:
     """从网易云音乐获取 歌曲/专辑/歌手/歌单/用户/MV/歌词/电台 的信息。
 
     Args:
-        keyword (str): 关键词
+        keywords (str): 关键词
         result_pageno (int): 搜索结果的所在的页码，默认为 0
         result_size (int): 搜索结果的数量，默认为 10
         result_type (int): 搜索的类型
@@ -99,9 +99,11 @@ def search_from_cloudmusic(keyword: str,
     if result_type not in (1, 10, 100, 1000, 1002, 1004, 1006, 1009):
         raise ValueError(f'不支持的搜索类型：{repr(result_type)}')
 
+    final_keyword: str = ' '.join(keywords)
+
     url = 'https://music.163.com/api/cloudsearch/pc'
     payload = {
-        's': keyword,
+        's': final_keyword,
         'type': result_type,
         'limit': result_size,
         'offset': result_pageno,
