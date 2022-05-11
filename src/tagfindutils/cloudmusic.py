@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from .rawquery import search_from_cloudmusic
+from .rawquery import search_from_cloudmusic, get_details_from_cloudmusic
 from .structures import SearchResult
 
 
@@ -15,14 +15,14 @@ class CloudMusicSearchResult(SearchResult):
 
     @property
     def album(self) -> str | None:
-        alb: dict[str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
+        alb: dict[str, str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
         if alb:
             albname = self.type_filter(alb.get('name'), str)
             return albname
 
     @property
     def albumid(self) -> int | None:
-        alb: dict[str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
+        alb: dict[str, str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
         if alb:
             albid = self.type_filter(alb.get('id'), int)
             return albid
@@ -33,13 +33,14 @@ class CloudMusicSearchResult(SearchResult):
         ret: list[str] = []
         if alia:
             for item in alia:
-                ret.append(self.type_filter(item, str))
+                if item:
+                    ret.append(self.type_filter(item, str))
 
         return ret
 
     @property
     def artists(self) -> list[str]:
-        arts: list[dict[str | int | list[str]]] | None = self.type_filter(self._raw_result.get('ar'), list)
+        arts: list[dict[str, str | int | list[str]]] | None = self.type_filter(self._raw_result.get('ar'), list)
         ret: list[str] = []
         if arts:
             for item in arts:
@@ -51,7 +52,7 @@ class CloudMusicSearchResult(SearchResult):
 
     @property
     def artistids(self) -> list[int]:
-        arts: list[dict[str | int | list[str]]] | None = self.type_filter(self._raw_result.get('ar'), list)
+        arts: list[dict[str, str | int | list[str]]] | None = self.type_filter(self._raw_result.get('ar'), list)
         ret: list[int] = []
         if arts:
             for item in arts:
@@ -63,7 +64,7 @@ class CloudMusicSearchResult(SearchResult):
 
     @property
     def coverurl(self) -> str | None:
-        alb: dict[str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
+        alb: dict[str, str | int | list[str]] | None = self.type_filter(self._raw_result.get('al'), dict)
         if alb:
             pic_url = self.type_filter(alb.get('picUrl'), str)
             return pic_url
@@ -78,8 +79,9 @@ class CloudMusicSearchResult(SearchResult):
 
     @property
     def publish_time(self) -> datetime | None:
-        time_ms: float = self.type_filter(self._raw_result.get('publishTime'), int) / 1000
-        if time_ms:
+        time_us = self.type_filter(self._raw_result.get('publishTime'), int)
+        if time_us is not None:
+            time_ms: float = time_us / 1000
             return datetime.fromtimestamp(time_ms)
 
     def get_details(self):
