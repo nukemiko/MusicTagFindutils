@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from .rawquery import search_from_cloudmusic, get_details_from_cloudmusic
+from .rawquery import search_from_cloudmusic
 from .structures import SearchResult
 
 
