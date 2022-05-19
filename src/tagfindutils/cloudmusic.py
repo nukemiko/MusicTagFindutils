@@ -84,7 +84,7 @@ class CloudMusicSearchResult(SearchResult):
             time_ms: float = time_us / 1000
             return datetime.fromtimestamp(time_ms)
 
-    def get_details(self):
+    def get_detail(self):
         raise NotImplementedError
 
 

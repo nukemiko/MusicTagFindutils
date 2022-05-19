@@ -77,5 +77,5 @@ class SearchResult(Generic[T]):
                          )
 
     @abstractmethod
-    def get_details(self):
+    def get_detail(self):
         pass

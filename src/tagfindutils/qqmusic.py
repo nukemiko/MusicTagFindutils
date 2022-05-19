@@ -94,7 +94,7 @@ class QQMusicSearchResult(SearchResult):
         if time_ms:
             return datetime.fromtimestamp(time_ms)
 
-    def get_details(self):
+    def get_detail(self):
         raise NotImplementedError
 
 
