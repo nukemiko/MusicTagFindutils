@@ -6,7 +6,7 @@ import requests
 
 
 def get_search_results_from_qqmusic(*keywords: str,
-                                    result_pageno: int = 0,
+                                    result_pageidx: int = 0,
                                     result_size: int = 10,
                                     result_type: int = 0,
                                     raw_response=False
@@ -15,7 +15,7 @@ def get_search_results_from_qqmusic(*keywords: str,
 
     Args:
         keywords (str): 关键词
-        result_pageno (int): 搜索结果的所在的页码，默认为 0
+        result_pageidx (int): 搜索结果的所在的页码，默认为 0
         result_size (int): 搜索结果的数量，默认为 10
         result_type (int): 搜索的类型
         raw_response (bool): 返回原始响应对象；
@@ -41,7 +41,7 @@ def get_search_results_from_qqmusic(*keywords: str,
         url = 'https://c.y.qq.com/soso/fcgi-bin/client_music_search_songlist'
         params = {
             'remoteplace': 'txt.yqq.playlist',
-            'page_no': result_pageno,
+            'page_no': result_pageidx,
             'num_per_page': result_size,
             'query': final_keyword
         }
@@ -50,7 +50,7 @@ def get_search_results_from_qqmusic(*keywords: str,
         params = {
             'format': 'json',
             'n': result_size,
-            'p': result_pageno + 1,
+            'p': result_pageidx + 1,
             'w': final_keyword,
             'cr': 1,
             'g_tk': 5381,
@@ -68,7 +68,7 @@ def get_search_results_from_qqmusic(*keywords: str,
 
 
 def get_search_results_from_cloudmusic(*keywords: str,
-                                       result_pageno: int = 0,
+                                       result_pageidx: int = 0,
                                        result_size: int = 10,
                                        result_type: int = 1,
                                        raw_response=False
@@ -77,7 +77,7 @@ def get_search_results_from_cloudmusic(*keywords: str,
 
     Args:
         keywords (str): 关键词
-        result_pageno (int): 搜索结果的所在的页码，默认为 0
+        result_pageidx (int): 搜索结果的所在的页码，默认为 0
         result_size (int): 搜索结果的数量，默认为 10
         result_type (int): 搜索的类型
         raw_response (bool): 返回原始响应对象；
@@ -106,7 +106,7 @@ def get_search_results_from_cloudmusic(*keywords: str,
         's': final_keyword,
         'type': result_type,
         'limit': result_size,
-        'offset': result_pageno,
+        'offset': result_pageidx,
         'total': True
     }
 

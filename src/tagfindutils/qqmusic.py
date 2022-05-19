@@ -99,19 +99,19 @@ class QQMusicSearchResult(SearchResult):
 
 
 def search(*keywords: str,
-           result_pageno: int = 0,
+           result_pageidx: int = 0,
            result_size: int = 10,
            ) -> list[QQMusicSearchResult]:
     """根据关键词，从 QQ 音乐获取匹配关键词的歌曲的信息。
 
     Args:
         keywords (str): 关键词
-        result_pageno (int): 搜索结果的所在的页码，默认为 0
+        result_pageidx (int): 搜索结果的所在的页码，默认为 0
         result_size (int): 搜索结果的数量，默认为 10
     Raises:
         requests.RequestException: 网络、远端相关错误
     """
-    _full_result = get_search_results_from_qqmusic(*keywords, result_pageno=result_pageno, result_size=result_size)
+    _full_result = get_search_results_from_qqmusic(*keywords, result_pageidx=result_pageidx, result_size=result_size)
     if isinstance(_full_result, requests.Response):
         full_result: dict = _full_result.json()
     else:
