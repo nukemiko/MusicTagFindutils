@@ -39,6 +39,17 @@ class CloudMusicSearchResult(SearchResult):
         return ret
 
     @property
+    def translations(self) -> list[str]:
+        tns: list[str] | None = self.type_filter(self._raw_result.get('tns'), list)
+        ret: list[str] = []
+        if tns:
+            for item in tns:
+                if item:
+                    ret.append(self.type_filter(item, str))
+
+        return ret
+
+    @property
     def artists(self) -> list[str]:
         arts: list[dict[str, str | int | list[str]]] | None = self.type_filter(self._raw_result.get('ar'), list)
         ret: list[str] = []
@@ -83,9 +94,6 @@ class CloudMusicSearchResult(SearchResult):
         if time_us is not None:
             time_ms: float = time_us / 1000
             return datetime.fromtimestamp(time_ms)
-
-    def get_detail(self):
-        raise NotImplementedError
 
 
 def search(*keywords: str,

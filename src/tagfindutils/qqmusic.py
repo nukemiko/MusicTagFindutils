@@ -35,6 +35,10 @@ class QQMusicSearchResult(SearchResult):
         return ret
 
     @property
+    def translations(self) -> list[str]:
+        return []
+
+    @property
     def artists(self) -> list[str]:
         singers: list[dict[str, str | int]] | None = self.type_filter(self._raw_result.get('singer'), list)
         ret: list[str] = []
@@ -93,9 +97,6 @@ class QQMusicSearchResult(SearchResult):
         time_ms = self.type_filter(self._raw_result.get('pubtime'), int)
         if time_ms:
             return datetime.fromtimestamp(time_ms)
-
-    def get_detail(self):
-        raise NotImplementedError
 
 
 def search(*keywords: str,

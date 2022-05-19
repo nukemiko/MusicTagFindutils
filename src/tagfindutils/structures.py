@@ -26,6 +26,11 @@ class SearchResult(Generic[T]):
 
     @property
     @abstractmethod
+    def translations(self) -> list[str]:
+        pass
+
+    @property
+    @abstractmethod
     def artists(self) -> list[str]:
         pass
 
@@ -59,12 +64,29 @@ class SearchResult(Generic[T]):
         return '、'
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}, " \
-               f"name: {self.songname if self.songname else 'N/A'}, " \
-               f"aliases: {self.property_sep.join(self.aliases) if self.aliases else 'N/A'}, " \
-               f"artists: {self.property_sep.join(self.artists) if self.artists else 'N/A'}, " \
-               f"album: {self.album if self.album else 'N/A'}, " \
-               f"publish time: {self.publish_time if self.publish_time else 'N/A'}>"
+        ret_strseg = ['<']
+
+        if self.songname:
+            ret_strseg.append(f'name: {self.songname}')
+        else:
+            ret_strseg.append(f'noname')
+        if self.translations:
+            ret_strseg.append(f'trans: {self.property_sep.join(self.translations)}')
+        if self.aliases:
+            ret_strseg.append(f'aliases: {self.property_sep.join(self.aliases)}')
+        else:
+            ret_strseg.append('noname')
+        if self.artists:
+            ret_strseg.append(f'artists: {self.property_sep.join(self.artists)}')
+        if self.album:
+            ret_strseg.append(f'album: {self.album}')
+        if self.publish_time:
+            ret_strseg.append(f'publish time: {self.publish_time}')
+
+        if len(ret_strseg) <= 1:
+            ret_strseg.append('empty result')
+
+        return '\n    '.join(ret_strseg) + '\n>'
 
     @classmethod
     def type_filter(cls, value: Any, t: Type[T_OUT], allow_None=True) -> T_OUT:
@@ -76,6 +98,64 @@ class SearchResult(Generic[T]):
                          f"(should be '{t.__name__}', got '{type(value).__name__}')"  # type: ignore
                          )
 
+
+class SongDetail(SearchResult):
+    @property
     @abstractmethod
-    def get_detail(self):
+    def album(self) -> str | None:
+        pass
+
+    @property
+    @abstractmethod
+    def albumid(self) -> int | None:
+        pass
+
+    @property
+    @abstractmethod
+    def aliases(self) -> list[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def translations(self) -> list[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def artists(self) -> list[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def artistids(self) -> list[int]:
+        pass
+
+    @property
+    @abstractmethod
+    def coverurl(self) -> str | None:
+        pass
+
+    @property
+    @abstractmethod
+    def songname(self) -> str | None:
+        pass
+
+    @property
+    @abstractmethod
+    def songid(self) -> int | None:
+        pass
+
+    @property
+    @abstractmethod
+    def publish_time(self) -> datetime | None:
+        pass
+
+    @property
+    @abstractmethod
+    def genre(self) -> list[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def company(self) -> list[str]:
         pass
