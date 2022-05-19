@@ -30,7 +30,7 @@ class QQMusicSearchResult(SearchResult):
         lyric_title = self.type_filter(self._raw_result.get('lyric'), str)
         ret: list[str] = []
         if lyric_title:
-            ret.append(lyric_title)
+            ret.extend(lyric_title.split('|'))
 
         return ret
 
