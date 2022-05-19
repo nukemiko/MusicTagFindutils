@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from .rawquery import search_from_qqmusic
+from .rawquery import get_search_results_from_qqmusic
 from .structures import SearchResult
 
 
@@ -102,7 +102,7 @@ def search(*keywords: str,
            result_pageno: int = 0,
            result_size: int = 10,
            ) -> list[QQMusicSearchResult]:
-    _full_result = search_from_qqmusic(*keywords, result_pageno=result_pageno, result_size=result_size)
+    _full_result = get_search_results_from_qqmusic(*keywords, result_pageno=result_pageno, result_size=result_size)
     if isinstance(_full_result, requests.Response):
         full_result: dict = _full_result.json()
     else:

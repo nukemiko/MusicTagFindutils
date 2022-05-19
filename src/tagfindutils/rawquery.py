@@ -5,12 +5,12 @@ import json
 import requests
 
 
-def search_from_qqmusic(*keywords: str,
-                        result_pageno: int = 0,
-                        result_size: int = 10,
-                        result_type: int = 0,
-                        raw_response=False
-                        ) -> dict | requests.Response:
+def get_search_results_from_qqmusic(*keywords: str,
+                                    result_pageno: int = 0,
+                                    result_size: int = 10,
+                                    result_type: int = 0,
+                                    raw_response=False
+                                    ) -> dict | requests.Response:
     """从 QQ 音乐获取 歌曲/歌单/歌词/专辑/歌手/MV 的信息。
 
     Args:
@@ -67,12 +67,12 @@ def search_from_qqmusic(*keywords: str,
     return resp.json()
 
 
-def search_from_cloudmusic(*keywords: str,
-                           result_pageno: int = 0,
-                           result_size: int = 10,
-                           result_type: int = 1,
-                           raw_response=False
-                           ) -> dict | requests.Response:
+def get_search_results_from_cloudmusic(*keywords: str,
+                                       result_pageno: int = 0,
+                                       result_size: int = 10,
+                                       result_type: int = 1,
+                                       raw_response=False
+                                       ) -> dict | requests.Response:
     """从网易云音乐获取 歌曲/专辑/歌手/歌单/用户/MV/歌词/电台 的信息。
 
     Args:
