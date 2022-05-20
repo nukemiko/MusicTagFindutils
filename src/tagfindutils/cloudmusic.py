@@ -192,7 +192,7 @@ class CloudMusicSearchResult(SearchResult):
 
     def get_detail(self) -> CloudMusicSongDetail | None:
         if self.songid is not None:
-            ret = detail(self.songid)
+            ret = details(self.songid)
             if len(ret) != 0:
                 return ret[0]
 
@@ -224,7 +224,12 @@ def search(*keywords: str,
     return ret
 
 
-def detail(*songids: int | str) -> list[CloudMusicSongDetail]:
+def details(*songids: int | str) -> list[CloudMusicSongDetail]:
+    """根据一个或多个 songid 从网易云音乐获取一首/多首歌曲的详细信息。
+
+    Args:
+        *songids: 一个或多个歌曲 ID
+    """
     _full_result = get_details_from_cloudmusic(*songids, raw_response=False)
     if isinstance(_full_result, requests.Response):
         full_result: dict = _full_result.json()

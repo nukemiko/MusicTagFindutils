@@ -253,7 +253,7 @@ class QQMusicSearchResult(SearchResult):
 
     def get_detail(self) -> SongDetail | None:
         if self.songmid:
-            ret = detail(self.songmid)
+            ret = details(self.songmid)
             if len(ret) != 0:
                 return ret[0]
 
@@ -285,7 +285,12 @@ def search(*keywords: str,
     return ret
 
 
-def detail(*songmids: str) -> list[QQMusicSongDetail]:
+def details(*songmids: str) -> list[QQMusicSongDetail]:
+    """根据一个或多个 songmid 从 QQ 音乐获取一首/多首歌曲的详细信息。
+
+    Args:
+        *songmids: 一个或多个歌曲 mID
+    """
     _full_result = get_details_from_qqmusic(*songmids, raw_response=False)
     if isinstance(_full_result, requests.Response):
         full_result: dict = _full_result.json()
