@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from datetime import datetime
-from typing import Any, Generic, Type, TypeVar
+from typing import Any, Generic, Type
 
-T = TypeVar('T')
-T_OUT = TypeVar('T_OUT')
+from .utils import T, T_OUT, type_filter
 
 
 class SearchResult(Generic[T]):
@@ -88,13 +87,7 @@ class SearchResult(Generic[T]):
 
     @classmethod
     def type_filter(cls, value: Any, t: Type[T_OUT], allow_None=True) -> T_OUT:
-        if value is None and allow_None:
-            return value
-        if isinstance(value, t):
-            return value
-        raise ValueError(f"unexpected type of value from result "
-                         f"(should be '{t.__name__}', got '{type(value).__name__}')"  # type: ignore
-                         )
+        return type_filter(value=value, t=t, allow_None=allow_None)
 
     def get_detail(self) -> SongDetail | None:
         pass
