@@ -180,3 +180,6 @@ class SongDetail(SearchResult):
             ret_strseg.append('empty result')
 
         return '\n    '.join(ret_strseg) + '\n>'
+
+    def get_detail(self) -> SongDetail:
+        return self
