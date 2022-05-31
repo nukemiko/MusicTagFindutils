@@ -6,7 +6,7 @@ from . import cloudmusic
 from . import qqmusic
 from .structures import SearchResult
 
-__VERSION__ = '0.1.0'
+__VERSION__ = '0.1.1'
 
 SearchFunc = Union[
     Callable[[Any], List[cloudmusic.CloudMusicSearchResult]],
