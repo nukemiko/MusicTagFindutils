@@ -4,9 +4,15 @@
 
 ## 安装
 
-### Pypi
+所需依赖：
+
+- `requests` - 网络请求库
+
+### PyPI
 
 `pip install -U MusicTagFindutils`
+
+或者[前往 PyPI 页面](https://pypi.org/project/MusicTagFindUtils)。
 
 ### 本仓库
 
