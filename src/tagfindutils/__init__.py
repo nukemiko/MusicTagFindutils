@@ -4,7 +4,7 @@ from . import cloudmusic
 from . import qqmusic
 from .structures import SearchResult
 
-__VERSION__ = '0.1.1'
+__VERSION__ = '0.1.2'
 
 
 def supported_sources():
