@@ -251,7 +251,7 @@ class QQMusicSearchResult(SearchResult):
         if time_ms:
             return datetime.fromtimestamp(time_ms)
 
-    def get_detail(self) -> SongDetail | None:
+    def get_detail(self) -> QQMusicSongDetail | None:
         if self.songmid:
             ret = details(self.songmid)
             if len(ret) != 0:
