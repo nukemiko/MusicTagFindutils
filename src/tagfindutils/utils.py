@@ -1,16 +1,14 @@
+# -*- coding: utf-8 -*-
 from __future__ import annotations
 
-from typing import Any, Type, TypeVar
 
-T = TypeVar('T')
-T_OUT = TypeVar('T_OUT')
-
-
-def type_filter(value: Any, t: Type[T_OUT], allow_None=True) -> T_OUT:
-    if value is None and allow_None:
-        return value
-    if isinstance(value, t):
-        return value
-    raise ValueError(f"unexpected type of value from result "
-                     f"(should be '{t.__name__}', got '{type(value).__name__}')"
-                     )
+def guess_picture_mimetype(picture_data: bytes | bytearray, /) -> str | None:
+    for header, mimetype in {
+        b'\x89PNG\r\n\x1a\n'                   : 'image/png',
+        b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01': 'image/jpeg',
+        b'\xff\xd8\xff\xee'                    : 'image/jpeg',
+        b'\xff\xd8\xff\xe1'                    : 'image/jpeg',
+        b'BM'                                  : 'image/bmp'
+    }.items():
+        if picture_data.startswith(header):
+            return mimetype
