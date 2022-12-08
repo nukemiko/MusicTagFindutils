@@ -34,7 +34,7 @@ def rawquery_get_matched_items(*keywords: str,
 
     Args:
         keywords (str): 关键字，可接受多个
-        result_pageidx (int): 搜索结果所在的页码，默认为 0，实际查询过程中会将其加 1
+        result_pageidx (int): 搜索结果所在的页码，默认为 0
         result_pagesize (int): 搜索结果的数量，默认为 10
         user_agent (str): 发送查询请求时使用的用户代理（User Agent）字符串
     Raises:
@@ -66,7 +66,7 @@ def rawquery_get_matched_items(*keywords: str,
                 'searchid'    : search_id,
                 'query'       : final_keyword,
                 'search_type' : 0,
-                'page_num'    : int(result_pageidx) + 1,
+                'page_num'    : int(result_pageidx),
                 'num_per_page': int(result_pagesize)
             }
         }
