@@ -39,6 +39,7 @@ def get_matched_items(*keywords: str,
         user_agent (str): 发送查询请求时使用的用户代理（User Agent）字符串
     Raises:
         requests.RequestException: 网络请求相关异常
+        ConnectionError: 网络请求正常，但远端服务返回表示报错的状态码
     """
     if not keywords:
         raise ValueError("no keywords were provided")

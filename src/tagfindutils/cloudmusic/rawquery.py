@@ -8,6 +8,16 @@ def get_matched_items(*keywords: str,
                       result_pageidx: int = 0,
                       result_pagesize: int = 10
                       ) -> dict:
+    """从网易云音乐搜索与关键字 ``*keywords`` 匹配/相关的信息。
+
+    Args:
+        keywords (str): 关键字，可接受多个
+        result_pageidx (int): 搜索结果所在的页码，默认为 0
+        result_pagesize (int): 搜索结果的数量，默认为 10
+    Raises:
+        requests.RequestException: 网络请求相关异常
+        ConnectionError: 网络请求正常，但远端服务返回表示报错的状态码
+    """
     if not keywords:
         raise ValueError("no keywords were provided")
     final_keyword = ' '.join(keywords)
