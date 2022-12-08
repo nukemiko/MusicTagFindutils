@@ -4,10 +4,10 @@ from __future__ import annotations
 import requests
 
 
-def get_matched_items(*keywords: str,
-                      result_pageidx: int = 0,
-                      result_pagesize: int = 10
-                      ) -> dict:
+def rawquery_get_matched_items(*keywords: str,
+                               result_pageidx: int = 0,
+                               result_pagesize: int = 10
+                               ) -> dict:
     """从网易云音乐搜索与关键字 ``*keywords`` 匹配/相关的信息。
 
     Args:

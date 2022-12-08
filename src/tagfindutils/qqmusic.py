@@ -10,7 +10,7 @@ import time
 import requests
 
 
-def gen_search_id(n: int) -> int:
+def _rawquery_gen_search_id(n: int) -> int:
     t = n * 18014398509481984
     a = math.ceil(random.random() * 4194304) * 4294967296
     o = datetime.datetime.now()
@@ -19,11 +19,11 @@ def gen_search_id(n: int) -> int:
     return t + a + r
 
 
-def get_matched_items(*keywords: str,
-                      result_pageidx: int = 0,
-                      result_pagesize: int = 10,
-                      user_agent: str = None
-                      ) -> dict:
+def rawquery_get_matched_items(*keywords: str,
+                               result_pageidx: int = 0,
+                               result_pagesize: int = 10,
+                               user_agent: str = None
+                               ) -> dict:
     """从 QQ 音乐搜索与关键字 ``*keywords`` 匹配/相关的信息。
 
     发送查询请求时，默认使用以下用户代理（User Agent）字符串：
@@ -44,7 +44,7 @@ def get_matched_items(*keywords: str,
     if not keywords:
         raise ValueError("no keywords were provided")
     final_keyword = ' '.join(keywords)
-    search_id = gen_search_id(3)
+    search_id = _rawquery_gen_search_id(3)
     payload_asdict = {
         'comm' : {
             'g_tk'       : 997034911,
