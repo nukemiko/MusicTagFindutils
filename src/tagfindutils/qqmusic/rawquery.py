@@ -1,29 +1,29 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
+import datetime
 import json
-from datetime import datetime
-from math import ceil
-from random import random, sample
-from time import time
+import math
+import random
+import time
 
 import requests
 
 
 def gen_search_id(n: int) -> int:
     t = n * 18014398509481984
-    a = ceil(random() * 4194304) * 4294967296
-    o = datetime.now()
+    a = math.ceil(random.random() * 4194304) * 4294967296
+    o = datetime.datetime.now()
     r = 1000 * (3600 * o.hour + 60 * o.minute + o.second + o.microsecond)
 
     return t + a + r
 
 
-def get_music_result(*keywords: str,
-                     result_pageidx: int = 0,
-                     result_pagesize: int = 10,
-                     user_agent: str = None
-                     ) -> dict:
+def get_matched_items(*keywords: str,
+                      result_pageidx: int = 0,
+                      result_pagesize: int = 10,
+                      user_agent: str = None
+                      ) -> dict:
     """从 QQ 音乐搜索与关键字 ``*keywords`` 匹配/相关的信息。
 
     发送查询请求时，默认使用以下用户代理（User Agent）字符串：
@@ -40,12 +40,14 @@ def get_music_result(*keywords: str,
     Raises:
         requests.RequestException: 网络请求相关异常
     """
+    if not keywords:
+        raise ValueError("no keywords were provided")
     final_keyword = ' '.join(keywords)
     search_id = gen_search_id(3)
     payload_asdict = {
         'comm' : {
             'g_tk'       : 997034911,
-            'uin'        : ''.join(sample('1234567890', 10)),
+            'uin'        : ''.join(random.sample('1234567890', 10)),
             'format'     : 'json',
             'inCharset'  : 'utf-8',
             'outCharset' : 'utf-8',
@@ -73,10 +75,9 @@ def get_music_result(*keywords: str,
     elif not isinstance(user_agent, str):
         raise TypeError(f"'user_agent' must be str or None, not {type(user_agent).__name__}")
 
-    print(user_agent)
     resp = requests.post(
         url='https://u.y.qq.com/cgi-bin/musicu.fcg?'
-            f'_webcgikey=DoSearchForQQMusicDesktop&_={int(round(time() * 1000))}',
+            f'_webcgikey=DoSearchForQQMusicDesktop&_={int(round(time.time() * 1000))}',
         headers={
             'Accept'         : '*/*',
             'Accept-Encoding': 'gzip, deflate, br',
@@ -86,9 +87,13 @@ def get_music_result(*keywords: str,
         },
         data=json.dumps(payload_asdict, ensure_ascii=False).encode('utf-8')
     )
+
     resp.raise_for_status()
     result = resp.json()
     if result['req_0']['code'] != 0:
-        raise RuntimeError(f"query failed: remote returns non-zero status code {result['req_0']['code']}")
+        raise ConnectionError(
+            f"query failed: remote service returns an exceptional status code "
+            f"{result['req_0']['code']}"
+        )
 
     return result
