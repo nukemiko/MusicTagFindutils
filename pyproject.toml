@@ -1,0 +1,39 @@
+[project]
+name = "MusicTagFindUtils"
+dynamic = ["dependencies", "readme", "version"]
+authors = [
+    { name = "nukemiko" },
+]
+description = "用 Pythonic 的方式搜索歌曲的标签信息"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
+]
+keywords = ["music", "audio", "cloudmusic", "qqmusic", "metadata", "tag"]
+
+[project.urls]
+"Homepage" = "https://github.com/nukemiko/MusicTagFindutils"
+"Documentation" = "https://github.com/nukemiko/MusicTagFindutils"
+"Bug Tracker" = "https://github.com/nukemiko/MusicTagFindutils/issues"
+"Releases" = "https://github.com/nukemiko/MusicTagFindutils/releases"
+
+[build-system]
+requires = ["setuptools >= 46.4.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+readme = { file = ["README.md"], content-type = 'text/markdown' }
+version = { file = "src/tagfindutils/VERSION" }
