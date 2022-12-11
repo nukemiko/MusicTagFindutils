@@ -165,7 +165,7 @@ class MusicInfo:
             keymaps: _KeyMaps = {
                 'musicName'   : ('title', lambda _: [_]),
                 'artistsNames': ('artist', lambda _: list(_)),
-                'albumName'   : ('albumName', lambda _: [_]),
+                'albumName'   : ('album', lambda _: [_]),
                 'publishDate' : ('date', lambda _: [(str(_.year))]),
                 'copyright'   : ('label', lambda _: [_]),
             }
@@ -201,7 +201,7 @@ class MusicInfo:
             keymaps: _KeyMaps = {
                 'musicName'   : ('title', lambda _: [_]),
                 'artistsNames': ('artist', lambda _: list(_)),
-                'albumName'   : ('albumName', lambda _: [_]),
+                'albumName'   : ('album', lambda _: [_]),
                 'publishDate' : ('date', lambda _: [(str(_.year))]),
                 'copyright'   : ('label', lambda _: [_]),
             }
