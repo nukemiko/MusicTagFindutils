@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from base64 import b64encode
-from typing import ByteString
+from typing import ByteString, Sequence
 
 from mutagen import apev2, flac, id3
 
@@ -56,3 +56,21 @@ def make_id3_apic(picture_data: ByteString, picture_type: int = 3) -> id3.APIC:
     if guess_result:
         mime, fmt = guess_result
         return id3.APIC(type=picture_type, data=picture_data, mime=mime)
+
+
+def str_sequence_prettify(sequence: Sequence[str], with_last_sep_spec: bool = False) -> str:
+    seq = list(sequence)
+    if len(seq) <= 0:
+        return ''
+    elif len(seq) == 1:
+        return str(seq[0])
+    else:
+        seq_common = seq[:-1]
+        seq_last = seq[-1]
+        seq_common_prettified = '、'.join(seq_common)
+        if with_last_sep_spec:
+            seq_prettified = '和'.join([seq_common_prettified, seq_last])
+        else:
+            seq_prettified = '、'.join([seq_common_prettified, seq_last])
+
+        return seq_prettified
