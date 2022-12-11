@@ -27,21 +27,32 @@ class _KeyMaps(TypedDict):
 @dataclass
 class MusicInfo:
     musicName: str = ''
+    musicAliases: list[str] = field(default_factory=list)
+    musicTranslations: list[str] = field(default_factory=list)
     musicId: int = 0
     artists: list[str] = field(default_factory=list)
+    artistsAliases: dict[str, list[str]] = field(default_factory=dict)
+    artistsTranslations: dict[str, list[str]] = field(default_factory=dict)
     artistsIds: dict[str, int] = field(default_factory=dict)
     album: str = ''
+    albumAliases: list[str] = field(default_factory=list)
+    albumTranslations: list[str] = field(default_factory=list)
+    albumPublishDate: datetime = None
     albumId: int = 0
-    aliases: list[str] = field(default_factory=list)
-    translations: list[str] = field(default_factory=list)
-    coverUrl: str = ''
-    coverData: bytes = ''
+    albumCoverUrl: str = ''
+    albumCoverData: bytes = ''
     publishDate: datetime = None
     copyright: str = ''
 
     def to_mutagen_tag(self,
                        tag_type: Literal['APEv2', 'FLAC', 'ID3', 'VorbisComment']
                        ) -> apev2.APEv2 | flac.FLAC | id3.ID3 | oggvorbis.OggVorbis:
+        """将 MusicInfo 导出为 Mutagen 库使用的标签格式实例：
+        ``mutagen.apev2.APEv2``、``mutagen.flac.FLAC``、``mutagen.id3.ID3``、``mutagen.oggvorbis.OggVorbis``。
+
+        Args:
+            tag_type: 需要导出为何种格式的标签实例，仅支持 'APEv2'、'FLAC'、'ID3' 和 'VorbisComment'
+        """
         if tag_type == 'APEv2':
             tag: apev2.APEv2 | flac.FLAC | id3.ID3 | oggvorbis.OggVorbis = apev2.APEv2()
             keymaps: _KeyMaps = {
@@ -56,7 +67,7 @@ class MusicInfo:
                             cover_data: bytes
                             ) -> None:
                 if cover_data:
-                    coverart = make_apev2_coverart(self.coverData)
+                    coverart = make_apev2_coverart(self.albumCoverData)
                     if coverart:
                         tag_['Cover Art (Front)'] = coverart
         elif tag_type == 'FLAC':
@@ -75,7 +86,7 @@ class MusicInfo:
                             cover_data: bytes
                             ) -> None:
                 if cover_data:
-                    picture = make_flac_picture(self.coverData)
+                    picture = make_flac_picture(self.albumCoverData)
                     if picture:
                         tag_.add_picture(picture)
         elif tag_type == 'ID3':
@@ -92,7 +103,7 @@ class MusicInfo:
                             cover_data: bytes
                             ) -> None:
                 if cover_data:
-                    apic = make_id3_apic(self.coverData)
+                    apic = make_id3_apic(self.albumCoverData)
                     if apic:
                         tag_['APIC:'] = apic
         elif tag_type == 'VorbisComment':
@@ -111,7 +122,7 @@ class MusicInfo:
                             cover_data: bytes
                             ) -> None:
                 if cover_data:
-                    mbp = make_vcomment_metadata_block_picture(self.coverData)
+                    mbp = make_vcomment_metadata_block_picture(self.albumCoverData)
                     if mbp:
                         tag_['metadata_block_picture'] = [mbp]
         else:
@@ -127,6 +138,6 @@ class MusicInfo:
             if attr:
                 tag[tagkey] = constructor(attr)
 
-        embed_cover(tag, self.coverData)
+        embed_cover(tag, self.albumCoverData)
 
         return tag
