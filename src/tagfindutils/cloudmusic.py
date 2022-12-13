@@ -48,3 +48,33 @@ def rawquery_get_matched_items(*keywords: str,
         )
 
     return result
+
+
+def rawquery_get_item_detail(music_id: int) -> dict:
+    """根据 ``music_id``，查找网易云音乐上对应歌曲的信息。"""
+    url = 'https://music.163.com/api/v3/song/detail'
+
+    payload = {
+        'c': json.dumps(
+            [{'id': int(music_id)}]
+        )
+    }
+
+    resp = requests.post(url, data=payload)
+    resp.raise_for_status()
+    try:
+        results: list[dict] = resp.json()['songs']
+    except json.JSONDecodeError:
+        raise ConnectionError('JSON Decode failed! Original response text: \n'
+                              f'{resp.text}'
+                              )
+    except KeyError:
+        raise ConnectionError('remote service returns invalid query result! '
+                              'Original response text: \n'
+                              f'{resp.text}'
+                              )
+    for item in results:
+        if item.get('id') == music_id:
+            return item
+    else:
+        raise ConnectionError(f'no item corresponnding to music_id {music_id}')
