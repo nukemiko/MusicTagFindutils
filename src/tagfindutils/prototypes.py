@@ -29,71 +29,89 @@ class _KeyMaps(TypedDict):
 
 @dataclass
 class MusicInfo:
+    def prettify(self) -> None:
+        print(self)
+
     def __str__(self) -> str:
         strseq = ['******']
         if self.musicName:
-            music_name_line = ['曲名：', str(self.musicName)]
+            music_name_line = ['曲名', str(self.musicName)]
             if self.musicId is not None:
-                music_name_line.append(f'（歌曲 ID）{self.musicId}')
+                music_name_line.append(f'<歌曲 ID> {self.musicId}')
             if self.musicMId:
-                music_name_line.append(f'（歌曲 MId）{self.musicMId}')
-            if self.musicTranslations:
+                music_name_line.append(f'<歌曲 MId> {self.musicMId}')
+            if self.musicTranslations and self.musicAliases:
                 music_name_line.append(
-                    f'（翻译）{str_sequence_prettify(self.musicTranslations)}'
+                    f'<翻译> {str_sequence_prettify(self.musicTranslations)}'
                 )
-            if self.musicAliases:
                 music_name_line.append(
-                    f'（别名）{str_sequence_prettify(self.musicAliases)}'
+                    f'<别名> {str_sequence_prettify(self.musicAliases)}'
+                )
+            elif self.musicTranslations:
+                music_name_line.append(
+                    f'<翻译/别名> {str_sequence_prettify(self.musicTranslations)}'
+                )
+            elif self.musicAliases:
+                music_name_line.append(
+                    f'<翻译/别名> {str_sequence_prettify(self.musicAliases)}'
                 )
             strseq.append('\n  '.join(music_name_line))
         if self.artistsNames:
-            all_artists_line = ['歌手：']
+            all_artists_line = ['歌手']
             for artist_name in self.artistsNames:
-                artist_line = ['  ']
+                artist_line = [f'  {artist_name}']
                 if artist_name in self.artistsIds:
-                    artist_line.append(f'[{self.artistsIds[artist_name]}]')
+                    artist_line.append(f' | <歌手 ID> {self.artistsIds[artist_name]}')
                 if artist_name in self.artistsMIds:
-                    artist_line.append(f'[{self.artistsMIds[artist_name]}]')
-                artist_line.append(artist_name)
+                    artist_line.append(f' | <歌手 MId> {self.artistsMIds[artist_name]}')
                 if artist_name in self.artistsTranslations:
                     artist_line.append(
-                        f' -（翻译）'
+                        f' | <翻译> '
                         f'{str_sequence_prettify(self.artistsTranslations[artist_name])}'
                     )
                 if artist_name in self.artistsAliases:
                     artist_line.append(
-                        f' -（别名）'
+                        f' | <别名> '
                         f'{str_sequence_prettify(self.artistsAliases[artist_name])}'
                     )
                 all_artists_line.append(''.join(artist_line))
             strseq.append('\n  '.join(all_artists_line))
         if self.albumName:
-            album_line = ['专辑：', str(self.albumName)]
+            album_line = ['专辑', str(self.albumName)]
             if self.albumId is not None:
-                album_line.append(f'（专辑 ID）{self.albumId}')
+                album_line.append(f'<专辑 ID> {self.albumId}')
             if self.albumMId:
-                album_line.append(f'（专辑 MId）{self.albumMId}')
-            if self.albumTranslations:
+                album_line.append(f'<专辑 MId> {self.albumMId}')
+            if self.albumTranslations and self.albumAliases:
                 album_line.append(
-                    f'（翻译）{str_sequence_prettify(self.albumTranslations)}'
+                    f'<翻译> {str_sequence_prettify(self.albumTranslations)}'
                 )
-            if self.artistsAliases:
                 album_line.append(
-                    f'（别名）{str_sequence_prettify(self.artistsAliases)}'
+                    f'<别名> {str_sequence_prettify(self.artistsAliases)}'
+                )
+            elif self.albumTranslations:
+                album_line.append(
+                    f'<翻译/别名> {str_sequence_prettify(self.albumTranslations)}'
+                )
+            elif self.albumAliases:
+                album_line.append(
+                    f'<翻译/别名> {str_sequence_prettify(self.artistsAliases)}'
                 )
             if self.albumCoverUrl:
                 album_line.append(
-                    f'（封面 URL）{self.albumCoverUrl}'
+                    f'<封面 URL> {self.albumCoverUrl}'
                 )
             if self.albumPublishDate:
                 album_line.append(
-                    f'（专辑发布时间）{self.albumPublishDate.strftime("%Y年 %m月 %d日").strip()}'
+                    f'<专辑发布时间> {self.albumPublishDate.strftime("%Y年 %m月 %d日").strip()}'
                 )
             strseq.append('\n  '.join(album_line))
         if self.publishDate:
-            strseq.append(f'歌曲发布时间：{self.publishDate.strftime("%Y年 %m月 %d日").strip()}')
+            strseq.append(f'歌曲发布时间\n  {self.publishDate.strftime("%Y年 %m月 %d日").strip()}')
         if self.copyright:
-            strseq.append(f'版权信息：\n  {self.copyright}')
+            strseq.append(f'版权信息\n  {self.copyright}')
+
+        strseq.append('******')
 
         return '\n'.join(strseq)
 
