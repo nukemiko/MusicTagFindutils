@@ -135,7 +135,7 @@ class MusicInfoFromCloudMusic(MusicInfo):
                 raise ValueError('self.albumCoverUrl is not available')
             resp = requests.get(self.albumCoverUrl, stream=True)
             resp.raise_for_status()
-            self.albumCoverData = bytes(resp.iter_content(chunk_size=io.DEFAULT_BUFFER_SIZE))
+            self.albumCoverData = b''.join(resp.iter_content(chunk_size=io.DEFAULT_BUFFER_SIZE))
 
 
 def search(*keywords: str,
