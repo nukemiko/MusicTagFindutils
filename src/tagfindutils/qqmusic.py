@@ -90,7 +90,12 @@ def rawquery_get_matched_items(*keywords: str,
     )
 
     resp.raise_for_status()
-    result = resp.json()
+    try:
+        result = resp.json()
+    except json.JSONDecodeError:
+        raise ConnectionError('JSON Decode failed! Original response text: \n'
+                              f'{resp.text}'
+                              )
     if result['req_0']['code'] != 0:
         raise ConnectionError(
             f"query failed: remote service returns an exceptional status code "

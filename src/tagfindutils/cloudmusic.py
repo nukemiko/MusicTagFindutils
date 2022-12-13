@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
+import json
+
 import requests
 
 
@@ -33,7 +35,12 @@ def rawquery_get_matched_items(*keywords: str,
 
     resp = requests.post(url=url, data=payload)
     resp.raise_for_status()
-    result = resp.json()
+    try:
+        result = resp.json()
+    except json.JSONDecodeError:
+        raise ConnectionError('JSON Decode failed! Original response text: \n'
+                              f'{resp.text}'
+                              )
     if result['code'] >= 400:
         raise ConnectionError(
             f"query failed: remote service returns an exceptional status code "
