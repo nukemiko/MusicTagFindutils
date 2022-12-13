@@ -59,7 +59,7 @@ class MusicInfo:
         if self.artistsNames:
             all_artists_line = ['歌手']
             for artist_name in self.artistsNames:
-                artist_line = [f'  {artist_name}']
+                artist_line = [f'{artist_name}']
                 if artist_name in self.artistsIds:
                     artist_line.append(f' | <歌手 ID> {self.artistsIds[artist_name]}')
                 if artist_name in self.artistsMIds:
